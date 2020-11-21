@@ -1,0 +1,24 @@
+﻿@model NewsSite.Data.Models.News
+
+            <div class="col-md-4 col-sm-4 col-xs-12">
+                <div class="wp-block inverse no-margin">
+                    <div class="figure">
+                        <img class="img-thumbnail" width="400" height="400" src="@Model.img" alt="@Model.name" />
+                        <div class="wp-block-info-over left">
+                            <h2>
+                                <span class="pull-left">
+                                    <a href="#">Автор:</a>
+                                    <span class="label label-white" style="color: white">@Model.AuthorName</span>
+                                </span>
+                            </h2>
+                        </div>
+                    </div>
+                    <h2 class="title">@Model.name</h2>
+                    <p>
+                        @Model.Desc
+                    </p>
+                </div>
+            </div>
+      
+      
+

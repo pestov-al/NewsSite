@@ -1,0 +1,45 @@
+﻿@model NewsSite.Data.Models.News
+
+
+    <h1>Добавить статью</h1>
+
+    <form controller = "Add" action ="EditNews" method="post" >
+        <div class="row">
+            <div>
+                <input type="hidden" asp-for="id" />
+            </div>
+            <div class="col-md-5 mb-3">
+                <label for="1">Автор статьи:</label>
+                <input type="text" value="" id="1" name="AuthorName" />
+            </div>
+            <div class="col-md-5 mb-3">
+                <label for="6">Заголовок:</label>
+                <input type="text" value="" id="6" name="name" />
+            </div>
+            <div class="col-md-5 mb-3">
+                <label for="2">Дата:</label>
+                <input type="date" id="2" value="" name="date" />
+            </div>
+        </div>
+    <div class="mb-3">
+        <div class="form-group">
+            <label for="3">Текст:</label>
+            <textarea class="form-control" id="3" rows="3" name="Desc"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="4"> Введите ссылку на картинку:</label>
+            <input type="text" value="img" id="4"  name="img" />
+        </div>
+        <div class="col-md-6 mb-3">
+             <label for="5">Выберите категорию:</label>
+            <input type="number" value="" id="5" name="categoryID" min="1" max="2" />
+        </div>
+    </div>
+
+        <input type="hidden" value="True" name="isFavourite" />
+        <div>
+            <input type="submit" value="Добавить" />
+        </div>
+    </form>

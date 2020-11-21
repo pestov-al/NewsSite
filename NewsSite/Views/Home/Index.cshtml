@@ -1,0 +1,13 @@
+﻿@using NewsSite.Data.Models
+@model HomeViewModel
+
+
+<h1>Актуальные новости</h1>
+<div class="row mt-5 mb-2">
+    @{
+        foreach (News asd in Model.someNews)
+        {
+            @Html.Partial("AllNews", asd)
+        }
+    }
+</div>
