@@ -1,0 +1,30 @@
+﻿@using NewsSite.Data.Models
+@model IEnumerable<News>
+
+<h2>Все новости</h2>
+<div id="searchresults">
+    @{
+        foreach (News news in Model)
+        {
+        <div class="col-md-4 col-sm-4 col-xs-12">
+            <div class="wp-block inverse no-margin">
+                <div class="figure">
+                    <img class="img-thumbnail" width="400" height="400" src="@news.img" alt="@news.name" />
+                    <div class="wp-block-info-over left">
+                        <h2>
+                            <span class="pull-left">
+                                <a href="#">Автор:</a>
+                                <span class="label label-white" style="color: white">@news.AuthorName</span>
+                            </span>
+                        </h2>
+                    </div>
+                </div>
+                <h2 class="title">@news.name</h2>
+                <p>
+                    @news.Desc
+                </p>
+            </div>
+        </div>
+        }
+    }
+</div>

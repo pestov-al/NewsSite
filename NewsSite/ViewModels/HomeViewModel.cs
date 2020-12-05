@@ -12,5 +12,6 @@ namespace NewsSite.ViewModels
         {
             set; get;
         }
+
     }
 }

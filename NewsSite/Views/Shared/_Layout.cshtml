@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 
 <html>
+<div id="content"></div>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
@@ -100,7 +101,7 @@
             border-radius: 0;
         }
     </style>
-
+    
 </head>
 <body>
     <header>
@@ -112,21 +113,14 @@
                 </a>
                 <a href="~/Add/EditNews" class="btn btn-secondary" role="button" aria-pressed="true">Добавить новость</a>
                 <a href="~/Add/Add" class="btn btn-secondary" role="button" aria-pressed="true">Удалить новость</a>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Категории:
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="/NEws/List/Politics">Политика</a>
-                        <a class="dropdown-item" href="/NEws/List/Economic">Экономика</a>
-                    </div>
-                </div>
+                <a href="~/Category/Cat" class="btn btn-secondary" role="button" aria-pressed="true">Все новости</a>
             </div>
         </div>
     </header>
 
     <div style="padding:75px">
         @RenderBody()
+        
     </div>
 
     <footer class="text-muted">
@@ -142,5 +136,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
 </body>
 </html>

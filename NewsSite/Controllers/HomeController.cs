@@ -23,5 +23,20 @@ namespace NewsSite.Controllers
             };
             return View(homeNews);
         }
+
+        [HttpPost]
+        public ActionResult NewsSearch(string name)
+        {
+            var allnews = _newsRep.GetSomeNews.Where(a => a.AuthorName.Contains(name)).ToList();
+            if (allnews.Count <= 0)
+            {
+                return NotFound();
+            }
+            return PartialView(allnews);
+        }
+
     }
+
+    
+
 }

@@ -34,6 +34,7 @@ namespace NewsSite
             services.AddTransient<IAllNews, NewsRepository>();
             services.AddTransient<INewsCategory, CategoryRepositoty>();
             services.AddTransient<ArtRepository>();
+            services.AddControllers();
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
         }
@@ -60,6 +61,7 @@ namespace NewsSite
                 routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id}");
                 routes.MapRoute(name: "CategoryFilter", template: "News/{action}/{category}", defaults: new {Controller ="News", action = "List" });
                 routes.MapRoute(name: "Add", template: "AddNews/{Add}", defaults: new { Controller = "AddNews", action = "Add" });
+             
 
             });
 

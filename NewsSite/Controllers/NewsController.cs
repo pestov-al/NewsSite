@@ -59,5 +59,30 @@ namespace NewsSite.Controllers
            
             return View(newsObj);
         }
+    
+        [HttpPost]
+        public ActionResult Search(string category)
+        {
+            string _category = category;
+            IEnumerable<News> news = null;
+            if (string.IsNullOrEmpty(category))
+            {
+                news = _allNEws.News.OrderBy(i => i.id);
+            }
+            else
+            {
+                if (string.Equals("Политика", category, StringComparison.OrdinalIgnoreCase))
+                {
+                    news = _allNEws.News.Where(i => i.Category.CategoryName.Equals("Политика")).OrderBy(i => i.id);
+                }
+                else if (string.Equals("Экономика", category, StringComparison.OrdinalIgnoreCase))
+                {
+                    news = _allNEws.News.Where(i => i.Category.CategoryName.Equals("Экономика")).OrderBy(i => i.id);
+                }
+            }
+            return PartialView(news);
+        }
+
+
     }
 }

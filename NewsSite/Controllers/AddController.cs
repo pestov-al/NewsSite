@@ -27,7 +27,7 @@ namespace NewsSite.Controllers
             var model = artRepository.GetArt();
             return View(model) ;
         }
-        
+
         public IActionResult EditNews(Guid id)
         {
             News model = id == default ? new News() : artRepository.GetNewsById(id);
@@ -48,11 +48,13 @@ namespace NewsSite.Controllers
         {
             
             artRepository.DeleteArticle(new News { id = id });
-            return RedirectToAction("Add"); 
+            return RedirectToAction("Add");
         }
 
-
-
+        public ViewResult Views()
+        {
+            return View();
+        }
 
     }
 }

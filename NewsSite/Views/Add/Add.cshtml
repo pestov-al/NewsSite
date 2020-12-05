@@ -1,27 +1,23 @@
 ﻿@model IQueryable<NewsSite.Data.Models.News>
-@{ 
-    ViewData["Title"] = "Страница удаления";
-}
 
-<div class="text-center">
-        <a controller ="Add" action="EditNews">Удалить статью:</a>
-</div>
+<div id="content">
+    <div class="container">
+        <div class="text-center">
 
-<div class ="text-center">
-    @foreach(News entity in Model)
-    {
-    <div>
-       Заголовок: @entity.name
+            @foreach (News entity in Model)
+            {
+                <div>
+                    Заголовок: @entity.name
 
-        <form method="post" controller="Add" action="DeleteNews">
-            <input type="hidden" value="@entity.id" name="id" />
-            <input type="submit" value="Удалить" />
-        </form>
+                    <form asp-controller="Add" asp-action="DeleteNews" data-ajax="true" data-ajax-mode="replace" data-ajax-update="#content" data-ajax-method="post">
+                        <input type="hidden" value="@entity.id" name="id" />
+                        <input type="submit" value="Удалить" />
+                    </form>
+                </div>
+            }
+
+        </div>
     </div>
-    }
 </div>
-
-
-
-
+<div id="content"></div>
 

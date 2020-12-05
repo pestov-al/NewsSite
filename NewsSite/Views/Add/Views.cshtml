@@ -1,0 +1,268 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BookShop</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container-xxl">
+        <div class="row m-4 p-1">
+            <h2>Список книг</h2>
+            <form name="bookForm">
+                <input type="hidden" name="bookID" value="0" />
+                <div class="form-group row mb-3">
+                    <label for="bookName">Название:</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" name="bookName" />
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <label for="author">Автор:</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" name="author" />
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <label for="img">Путь к превью:</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" name="img" />
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <label for="price">Стоимость:</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" name="price" type="number" />
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <label for="categoryID">ID категории:</label>
+                    <div class="col-sm-5">
+                        <input class="form-control" name="categoryID" type="number" />
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="panel-body">
+                        <button type="submit" id="submit" class="btn btn-primary">Сохранить</button>
+                        <button type="reset" id="reset" class="btn btn-primary">Сбросить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container-xxl">
+        <div class="row m-4 p-1">
+            <table class="table table-condensed table-striped col-md-8">
+                <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>Название</td>
+                        <td>Автор</td>
+                        <td>Путь к превью</td>
+                        <td>Стоимость</td>
+                        <td>ID категории</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js" integrity="sha384-5h4UG+6GOuV9qXh6HqOLwZMY4mnLPraeTrjT5v07o347pj6IkfuoASuGBhfDsp3d" crossorigin="anonymous"></script>
+</body>
+</html>
+
+<script
+
+// Получение всех книг
+async function GetBooks() {
+    // отправляем запрос и получаем ответ
+    const response = await fetch("/api/booksapi", {
+        method: "GET",
+        headers: { "Accept": "application/json" }
+    });
+    // если запрос прошел нормально
+    if (response.ok === true) {
+        // получаем данные
+        const books = await response.json();
+        let rows = document.querySelector("tbody");
+        books.forEach(book => {
+            // добавляем полученные элементы в таблицу
+            rows.append(row(book));
+        });
+    }
+}
+
+// Получение одной книги
+async function GetBook(bookID) {
+    const response = await fetch("/api/booksapi/" + bookID, {
+        method: "GET",
+        headers: { "Accept": "application/json" }
+    });
+    if (response.ok === true) {
+        const book = await response.json();
+        const form = document.forms["bookForm"];
+        form.elements["bookID"].value = book.bookID;
+        form.elements["bookName"].value = book.bookName;
+        form.elements["author"].value = book.author;
+        form.elements["img"].value = book.img;
+        form.elements["price"].value = book.price;
+        form.elements["categoryID"].value = book.categoryID;
+    }
+}
+
+// Добавление книги
+async function CreateBook(BookName, bookAuthor, bookImg, bookPrice, bookCategoryID) {
+
+    const response = await fetch("/api/booksapi", {
+        method: "POST",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            bookName: BookName,
+            author: bookAuthor,
+            img: bookImg,
+            price: parseInt(bookPrice, 10),
+            categoryID: parseInt(bookCategoryID, 10)
+        })
+    });
+    if (response.ok === true) {
+        const book = await response.json();
+        document.querySelector("tbody").append(row(book));
+        reset();
+    }
+}
+
+// Изменение книги
+async function EditBook(BookID, BookName, bookAuthor, bookImg, bookPrice, bookCategoryID) {
+    const response = await fetch("/api/booksapi/" + BookID, {
+        method: "PUT",
+        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        body: JSON.stringify({
+            bookID: parseInt(BookID, 10),
+            bookName: BookName,
+            author: bookAuthor,
+            img: bookImg,
+            price: parseInt(bookPrice, 10),
+            categoryID: parseInt(bookCategoryID, 10)
+        })
+    });
+    if (response.ok === true) {
+        const book = await response.json();
+        document.querySelector("tr[data-rowid='" + book.bookID + "']").replaceWith(row(book));
+        reset();
+    }
+}
+
+// Удаление книги
+async function DeleteBook(bookID) {
+    const response = await fetch("/api/booksapi/" + bookID, {
+        method: "DELETE",
+        headers: { "Accept": "application/json" }
+    });
+    if (response.ok === true) {
+        const book = await response.json();
+        document.querySelector("tr[data-rowid='" + book.bookID + "']").remove();
+        reset();
+    }
+}
+
+function reset() {
+    const form = document.forms["bookForm"];
+    form.elements["bookID"].value = 0;
+    form.elements["bookName"].value = null;
+    form.elements["author"].value = null;
+    form.elements["img"].value = null;
+    form.elements["price"].value = null;
+    form.elements["categoryID"].value = null;
+}
+
+// Создание строки для таблицы
+function row(book) {
+
+    const tr = document.createElement("tr");
+    tr.setAttribute("data-rowid", book.bookID);
+
+    const idTd = document.createElement("td");
+    idTd.append(book.bookID);
+    tr.append(idTd);
+
+    const bookNameTd = document.createElement("td");
+    bookNameTd.append(book.bookName);
+    tr.append(bookNameTd);
+
+    const authorTd = document.createElement("td");
+    authorTd.append(book.author);
+    tr.append(authorTd);
+
+    const imgTd = document.createElement("td");
+    imgTd.append(book.img);
+    tr.append(imgTd);
+
+    const priceTd = document.createElement("td");
+    priceTd.append(book.price);
+    tr.append(priceTd);
+
+    const categoryIdTd = document.createElement("td");
+    categoryIdTd.append(book.categoryID);
+    tr.append(categoryIdTd);
+
+    const linksTd = document.createElement("td");
+
+    const editLink = document.createElement("a");
+    editLink.setAttribute("data-id", book.bookID);
+    editLink.setAttribute("style", "cursor:pointer;padding:15px;");
+    editLink.append("Изменить");
+    editLink.addEventListener("click", e => {
+
+        e.preventDefault();
+        GetBook(book.bookID);
+    });
+    linksTd.append(editLink);
+
+    const removeLink = document.createElement("a");
+    removeLink.setAttribute("data-id", book.bookID);
+    removeLink.setAttribute("style", "cursor:pointer;padding:15px;");
+    removeLink.append("Удалить");
+    removeLink.addEventListener("click", e => {
+
+        e.preventDefault();
+        DeleteBook(book.bookID);
+    });
+
+    linksTd.append(removeLink);
+    tr.appendChild(linksTd);
+
+    return tr;
+}
+
+// Отправка формы
+document.forms["bookForm"].addEventListener("submit", e => {
+    e.preventDefault();
+    const form = document.forms["bookForm"];
+    const bookID = form.elements["bookID"].value;
+    const bookName = form.elements["bookName"].value;
+    const author = form.elements["author"].value;
+    const img = form.elements["img"].value;
+    const price = form.elements["price"].value;
+    const categoryID = form.elements["categoryID"].value;
+    if (bookID == 0)
+        CreateBook(bookName, author, img, price, categoryID);
+    else
+        EditBook(bookID, bookName, author, img, price, categoryID);
+});
+
+// Сброс значений формы
+document.forms["bookForm"].addEventListener("reset", e => {
+    e.preventDefault();
+    reset();
+});
+
+// Загрузка списка книг
+GetBooks();
